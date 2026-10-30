@@ -16,6 +16,19 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Download TShock
+        run: |
+          mkdir -p lib
+          # Tải bản TShock mới nhất (đang dùng 6.1.0 làm ví dụ, có thể đổi)
+          wget -q https://github.com/Pryaxis/TShock/releases/download/v6.1.0/TShock-5.2.1-for-Terraria-1.4.4.9-linux-amd64-release.zip -O tshock.zip || \
+          wget -q https://github.com/Pryaxis/TShock/releases/download/v5.2.1/TShock-5.2.1-for-Terraria-1.4.4.9-linux-amd64-release.zip -O tshock.zip
+          unzip -o tshock.zip -d tshock_temp
+          # Copy các dll cần thiết
+          find tshock_temp -name "TShockAPI.dll" -exec cp {} lib/ \;
+          find tshock_temp -name "OTAPI.dll" -exec cp {} lib/ \;
+          find tshock_temp -name "TerrariaServer.dll" -exec cp {} lib/ \;
+          ls -la lib/
+
       - name: Restore & Build
         run: |
           dotnet restore
