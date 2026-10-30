@@ -4,10 +4,11 @@
     <OutputType>Library</OutputType>
     <AssemblyName>EyeOfCthulhuMod</AssemblyName>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Thay link này bằng version TShock mày đang dùng nếu cần -->
-    <PackageReference Include="TShock" Version="6.1.0" />
+    <!-- Tạm thời dùng cách này để build được -->
+    <PackageReference Include="TSAPI" Version="6.1.0" />
   </ItemGroup>
 </Project>
