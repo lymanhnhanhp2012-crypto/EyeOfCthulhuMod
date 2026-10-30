@@ -16,23 +16,35 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Download TShock
+      - name: Download TShock 6.2.1
         run: |
           mkdir -p lib
-          # Tải bản TShock mới nhất (đang dùng 6.1.0 làm ví dụ, có thể đổi)
-          wget -q https://github.com/Pryaxis/TShock/releases/download/v6.1.0/TShock-5.2.1-for-Terraria-1.4.4.9-linux-amd64-release.zip -O tshock.zip || \
-          wget -q https://github.com/Pryaxis/TShock/releases/download/v5.2.1/TShock-5.2.1-for-Terraria-1.4.4.9-linux-amd64-release.zip -O tshock.zip
+          # Link chính thức mới nhất
+          wget -O tshock.zip "https://github.com/Pryaxis/TShock/releases/download/v6.2.1/TShock-6.2.1-for-Terraria-1.4.5.8-linux-amd64-release.zip" || \
+          wget -O tshock.zip "https://github.com/Pryaxis/TShock/releases/download/v6.2.1/TShock-v6.2.1-linux-amd64-release.zip" || \
+          wget -O tshock.zip "https://github.com/Pryaxis/TShock/releases/download/v6.1.0/TShock-5.2.4-for-Terraria-1.4.4.9-linux-amd64-release.zip"
+          
+          echo "=== Nội dung zip ==="
+          unzip -l tshock.zip | head -50
+          
           unzip -o tshock.zip -d tshock_temp
-          # Copy các dll cần thiết
-          find tshock_temp -name "TShockAPI.dll" -exec cp {} lib/ \;
-          find tshock_temp -name "OTAPI.dll" -exec cp {} lib/ \;
-          find tshock_temp -name "TerrariaServer.dll" -exec cp {} lib/ \;
+          
+          echo "=== Tìm DLL ==="
+          find tshock_temp -name "*.dll" | head -30
+          
+          # Copy tất cả dll quan trọng
+          find tshock_temp -name "TShockAPI.dll" -exec cp -v {} lib/ \;
+          find tshock_temp -name "OTAPI*.dll" -exec cp -v {} lib/ \;
+          find tshock_temp -name "TerrariaServer.dll" -exec cp -v {} lib/ \;
+          find tshock_temp -name "TSAPI.dll" -exec cp -v {} lib/ \;
+          
+          echo "=== Nội dung thư mục lib ==="
           ls -la lib/
 
       - name: Restore & Build
         run: |
           dotnet restore
-          dotnet build -c Release
+          dotnet build -c Release --verbosity detailed
 
       - name: Upload DLL
         uses: actions/upload-artifact@v4
