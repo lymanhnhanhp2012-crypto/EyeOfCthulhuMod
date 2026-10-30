@@ -8,7 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Tạm thời dùng cách này để build được -->
-    <PackageReference Include="TSAPI" Version="6.1.0" />
+    <Reference Include="TShockAPI">
+      <HintPath>lib/TShockAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="OTAPI">
+      <HintPath>lib/OTAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="TerrariaServer">
+      <HintPath>lib/TerrariaServer.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 </Project>
